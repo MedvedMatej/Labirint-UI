@@ -69,6 +69,8 @@ function matrixToGraph(matrix){
     //console.log(matrix.length, matrix[0].length)
     let graph = Array((matrix.length-2) * (matrix[0].length-2)).fill();
     let findNodes = []
+    let startNode;
+    let endNode;
     for(let i = 1; i < matrix.length-1; i++){
         
         for(let j = 1; j< matrix[i].length-1; j++){
@@ -84,18 +86,21 @@ function matrixToGraph(matrix){
             if(matrix[i+1][j] != -1) vozlisce[(i)*(matrix[i].length-2)+ (j-1)] = 1;      //dol
             graph[(i-1)*(matrix[i].length-2)+j-1] = vozlisce;
 
+            if(matrix[i][j] == -2){
+                startNode = (i-1)*(matrix[i].length-2)+j-1
+            }
             if(matrix[i][j] == -3){
                 findNodes.unshift((i-1)*(matrix[i].length-2)+j-1);
             }
             if(matrix[i][j] == -4){
-                findNodes.push((i-1)*(matrix[i].length-2)+j-1);
+                endNode = (i-1)*(matrix[i].length-2)+j-1;
             }
         }
     }
-    return [graph,findNodes];
+    return [graph, findNodes, startNode, endNode];
 }
 
-function search(graph, startNode, endNodes){
+function DFS(graph, startNode, endNodes){
     let marked = new Array(graph.length).fill(false);
     let from = new Array(graph.length).fill(0);
     
@@ -197,11 +202,12 @@ let matrix = stringToMatrix(text);
 //consolePrintMatrix(visit_matrix);
 drawMatrix(matrix);
 
-let nodes;
-let graph = matrixToGraph(matrix);
-nodes = graph[1];
-graph = graph[0];
 
+let graph = matrixToGraph(matrix);
+let startNode = graph[2];
+let endNode = graph[3];
+let nodes = graph[1];
+graph = graph[0];
 
 
 
