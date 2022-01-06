@@ -65,14 +65,49 @@ function drawMatrix(matrix){
     }
 }
 
+function matrixToGraph(matrix){
+    //console.log(matrix.length, matrix[0].length)
+    let graph = Array((matrix.length-2) * (matrix[0].length-2)).fill();
+    let findNodes = []
+    for(let i = 1; i < matrix.length-1; i++){
+        
+        for(let j = 1; j< matrix[i].length-1; j++){
+            let vozlisce = Array((matrix.length-1) * (matrix[i].length-1)).fill(0);
+            
+            if(matrix[i][j] == -1){
+                graph[(i-1)*(matrix[i].length-2)+j-1] = vozlisce;
+                continue;
+            }
+            if(matrix[i][j-1] != -1) vozlisce[(i-1)*(matrix[i].length-2)+ (j-1) -1] = 1; //levo
+            if(matrix[i][j+1] != -1) vozlisce[(i-1)*(matrix[i].length-2)+ (j-1) +1] = 1; //desno
+            if(matrix[i-1][j] != -1) vozlisce[(i-1-1)*(matrix[i].length-2)+ (j-1)] = 1;  //gor
+            if(matrix[i+1][j] != -1) vozlisce[(i)*(matrix[i].length-2)+ (j-1)] = 1;      //dol
+            graph[(i-1)*(matrix[i].length-2)+j-1] = vozlisce;
+
+            if(matrix[i][j] == -3){
+                findNodes.unshift((i-1)*(matrix[i].length-2)+j-1);
+            }
+            if(matrix[i][j] == -4){
+                findNodes.push((i-1)*(matrix[i].length-2)+j-1);
+            }
+        }
+    }
+    return [graph,findNodes];
+}
+
 let canvas = document.getElementById("Canvas");
 canvas.width = 800;
 canvas.height = 800;
 let ctx = canvas.getContext("2d");
 
-let text = readTextFile("./labyrinths/labyrinth_7.txt");
+let text = readTextFile("./labyrinths/labyrinth_1.txt");
 let matrix = stringToMatrix(text);
-let visit_matrix = Array(matrix.length).fill().map(() => Array(matrix[0].length).fill(0));
-consolePrintMatrix(visit_matrix);
+//let visit_matrix = Array(matrix.length).fill().map(() => Array(matrix[0].length).fill(0));
+//consolePrintMatrix(visit_matrix);
 drawMatrix(matrix);
+
+let nodes;
+let graph = matrixToGraph(matrix);
+nodes = graph[1];
+graph = graph[0];
 
