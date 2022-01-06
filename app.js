@@ -26,8 +26,8 @@ function stringToMatrix(data){
         for(let num of vrstice[i].split(",")){
             line.push(num);
         }
-
-        matrix.push(line)
+        if(line.length > 1)
+            matrix.push(line)
     }
     return matrix;
 }
@@ -53,7 +53,7 @@ function drawMatrix(matrix){
     //ctx.clearRect(0,0, canvas.width, canvas.height);
     for(let i in matrix){
         for(let j in matrix[i]){
-            if(matrix[i][j] >=0) ctx.fillStyle="#ffffff";
+            if(matrix[i][j] >=0) ctx.fillStyle="#8c8c8c";
             else if(matrix[i][j] == -1) ctx.fillStyle="#000000";
             else if(matrix[i][j] == -2) ctx.fillStyle="#ff0000";
             else if(matrix[i][j] == -3) ctx.fillStyle="#ffff00";
@@ -70,7 +70,7 @@ canvas.width = 800;
 canvas.height = 800;
 let ctx = canvas.getContext("2d");
 
-let text = readTextFile("./labyrinths/labyrinth_9.txt");
+let text = readTextFile("./labyrinths/labyrinth_7.txt");
 let matrix = stringToMatrix(text);
 let visit_matrix = Array(matrix.length).fill().map(() => Array(matrix[0].length).fill(0));
 consolePrintMatrix(visit_matrix);
