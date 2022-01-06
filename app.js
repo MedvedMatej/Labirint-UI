@@ -128,14 +128,20 @@ function DFS(graph, startNode, endNodes){
         if (endNodes.includes(curNode)){
             console.log("Resitev DFS v vozliscu " + curNode);
             console.log("Pot: " + curNode);
-
+            let finish = curNode;
+            let path = [curNode];
             while(true){
                 curNode = from[curNode];
-                if (curNode != -1) console.log(" <-- " + curNode);
-                else break;
+                if (curNode != -1){
+                    console.log(" <-- " + curNode);
+                    path.push(curNode)
+                }
+                else{
+                    let index = endNodes.indexOf(finish);
+                    endNodes.splice(index,1)
+                    return [finish, endNodes,path];
+                }
             }
-
-            return;
         }
         //najdi neobiskanega naslednjika
         let found = false;
@@ -206,6 +212,11 @@ function BFS(graph, startNode, endNodes){
     }
 }
 
+function ASTAR(graph, startNode, endNodes, hCost){
+    open = new []
+    
+}
+
 function main(timeStamp){
 
     if(timeStamp - previousTimeStamp > 500/(matrix.length/2)){
@@ -256,7 +267,7 @@ let barve = ["pink","red","orange","dodgerblue","darkgreen"]
 for(let i = 0 ; i < nodes.length+1; i++){
     console.log("Dolžina nodov",nodes.length)
     console.log("Ponovitev številka: ",i)
-    vrnjeno = BFS(graph,vrnjeno[0],vrnjeno[1])
+    vrnjeno = DFS(graph,vrnjeno[0],vrnjeno[1])
     pot.push(vrnjeno[2]);
     if(vrnjeno[1].length == 0){
         vrnjeno[1].push(endNode);
