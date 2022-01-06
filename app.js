@@ -145,6 +145,47 @@ function search(graph, startNode, endNodes){
     }
 }
 
+function BFS(graph, startNode, endNodes){
+    let marked = Array(graph.length).fill(false);
+    let from = Array(graph.length).fill(-1);
+    
+    let queue = [];
+
+    marked[startNode] = true;
+
+    queue.push(startNode);
+    console.log("Dajem v vrsto vozlisce " + startNode);
+
+    while(queue.length>0){
+        let curNode = queue.shift();
+        console.log("Odstranjujem iz vrste vozlisce " + curNode);
+
+        if(endNodes.incudes(curNode)){
+            console.log("Resitev BFS v vozliscu " + curNode);
+            console.log("Pot: " + curNode);
+            while(true){
+                curNode = from[curNode];
+                if(curNode != -1){
+                    console.log(" <-- " + curNode);
+                }
+                else{
+                    break;
+                }
+            }
+            return;
+        }
+
+        for(let nextNode = 0; nextNode < graph[curNode].length; nextNode++){
+            if(graph[curNode][nextNode] == 1 && !marked[nextNode]){
+                marked[nextNode] = true;
+                from[nextNode] = curNode;
+                queue.push(nextNode);
+                console.log("Dajem v vrsto vozlisce "+ nextNode);
+            }
+        }
+    }
+}
+
 let canvas = document.getElementById("Canvas");
 canvas.width = 800;
 canvas.height = 800;
@@ -160,4 +201,48 @@ let nodes;
 let graph = matrixToGraph(matrix);
 nodes = graph[1];
 graph = graph[0];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
