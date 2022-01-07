@@ -7,7 +7,7 @@ import { IDAStar } from "./Algorithms/IDAStar.js";
 let canvas = document.getElementById("Canvas");
 let ctx = canvas.getContext("2d");
 let previousTimeStamp = 0;
-let barve = ["pink", "red", "orange", "dodgerblue", "darkgreen", "blue"]
+let barve = [[255,192,203], [255,0,0], [255,160,0], [30,144,255], [0,100,0], [0,0,255]]
 
 let matrix;
 let pot = [];
@@ -139,8 +139,9 @@ function matrixToGraph(matrix) {
 }
 
 function changeColor() {
+    let alfa = 0.9;
     barve.unshift(barve.pop());
-    ctx.fillStyle = barve[0];
+    ctx.fillStyle = `rgba(${barve[0][0]}, ${barve[0][1]}, ${barve[0][2]}, ${alfa})`;
 }
 
 function main(timeStamp) {
