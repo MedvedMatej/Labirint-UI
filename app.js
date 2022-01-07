@@ -148,12 +148,12 @@ function main(timeStamp) {
 
     if (timeStamp - previousTimeStamp > 500 / (matrix.length / 2)) {
         previousTimeStamp = timeStamp;
-        if (pot[0].length == 0 && pot.length > 1) {
+        if (pot.length > 1  && pot[0].length == 0) {
             pot.shift();
             changeColor();
         }
 
-        if (pot[0].length > 0) {
+        if (pot.length > 0 && pot[0].length > 0) {
             drawDAWAY(pot[0].pop(), matrix.length);
         }
     }
@@ -187,13 +187,20 @@ function findPath() {
     let vrnjeno = [startNode, JSON.parse(JSON.stringify(nodes))]
     pot = []
 
+    let start = Date.now();
     for (let i = 0; i < nodes.length + 1; i++) {
-        vrnjeno = algo.search(graph, vrnjeno[0], vrnjeno[1])
+        if(algorithm == "IDA*"){
+            vrnjeno = algo.find(graph, vrnjeno[0], vrnjeno[1]);
+        }
+        else{
+            vrnjeno = algo.search(graph, vrnjeno[0], vrnjeno[1]);
+        }
         pot.push(vrnjeno[2]);
         if (vrnjeno[1].length == 0) {
             vrnjeno[1].push(endNode);
         }
     }
+    console.log("Porabljeni cas :",(Date.now()-start)/1000);
     done = true;
 }
 

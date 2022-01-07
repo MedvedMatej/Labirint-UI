@@ -13,27 +13,28 @@ export class IDAStar {
             return fScore;
         }
 
-        let min = Number.MAX_SAFE_INTEGER;
+        let min = Infinity;
 
         for (let nextNode = 0; nextNode < this.searchGraph[curNode].length; nextNode++) {
             if (this.searchGraph[curNode][nextNode] > 0) {
                 if (!(this.path.includes(nextNode))) {
-                    path.unshift(nextNode);
-                    let res = search(gScore + this.searchGraph[curNode][nextNode], bound);
-                    if (found) {
+                    this.path.unshift(nextNode);
+                    let res = this.search(gScore + this.searchGraph[curNode][nextNode], bound);
+                    if (this.found) {
                         return res;
                     }
                     if (res < min) {
                         min = res;
                     }
-                    path.shift();
+                    this.path.shift();
                 }
             }
         }
         return min;
     }
 
-    find(graph, startNode, endNodes, hCost) {
+    find(graph, startNode, endNodes) {
+        let hCost = Array(graph.length).fill(0);
         this.searchGraph = graph;
         this.searchEndNodes = endNodes;
         this.searchHeurCost = hCost;
@@ -47,17 +48,14 @@ export class IDAStar {
         while (true) {
             let res = this.search(0, bound);
 
-            if (found) {
-                console.log("Pot: ");
-
-                console.log(path[0])
-                for (let i = 0; i < this.path.length; i++) {
-                    console.log(" <-- " + path[i]);
-                }
-                break;
+            if (this.found) {
+                let finish = this.path[0];
+                let index = endNodes.indexOf(this.path[0]);
+                endNodes.splice(index,1);
+                return [this.path[0], endNodes, this.path];
             }
 
-            if (res == Number.MAX_SAFE_INTEGER) {
+            if (res == Infinity) {
                 break;
             }
 
