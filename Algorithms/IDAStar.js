@@ -1,4 +1,4 @@
-class IDAStar {
+export class IDAStar {
 
     search(gScore, bound) {
         let curNode = this.path[0];

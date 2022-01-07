@@ -9,20 +9,15 @@ export class DFS {
         marked[startNode] = true;
         stack.push(startNode);
 
-        console.log("Polagam na sklad vozlisce " + startNode);
-
         while (!(stack.length == 0)) {
             let curNode = stack[stack.length - 1];
 
             if (endNodes.includes(curNode)) {
-                console.log("Resitev DFS v vozliscu " + curNode);
-                console.log("Pot: " + curNode);
                 let finish = curNode;
                 let path = [curNode];
                 while (true) {
                     curNode = from[curNode];
                     if (curNode != -1) {
-                        console.log(" <-- " + curNode);
                         path.push(curNode)
                     }
                     else {
@@ -40,17 +35,13 @@ export class DFS {
                     from[nextNode] = curNode;
                     stack.push(nextNode);
 
-                    console.log("Polagam na sklad vozlisce " + nextNode);
-
                     found = true;
                     break;
                 }
-
             }
 
             if (!found) {
                 stack.pop();
-                console.log("Odstranjum s sklada vozlisce " + curNode);
             }
         }
     }

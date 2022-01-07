@@ -1,7 +1,7 @@
 export class IDDFS {
     search(graph, startNode, endNodes) {
         for (let depthLimit = 0; depthLimit < graph.length; depthLimit++) {
-            //console.log("Globina iskanja je " + depthLimit);
+
             let marked = Array(graph.length).fill(false);
             let from = Array(graph.length).fill(-1);
 
@@ -14,11 +14,10 @@ export class IDDFS {
                 let finish = curNode;
                 let path = [curNode];
                 if (endNodes.includes(curNode)) {
-                    console.log("Pot: " + curNode);
+
                     while (true) {
                         curNode = from[curNode];
                         if (curNode != -1) {
-                            console.log(" <-- " + curNode);
                             path.push(curNode);
                         }
                         else {
@@ -36,7 +35,7 @@ export class IDDFS {
                             marked[nextNode] = true;
                             from[nextNode] = curNode;
                             stack.push(nextNode);
-                            //console.log("Polagam na sklad vozlisce " + nextNode);
+
                             found = true;
                             break;
                         }
