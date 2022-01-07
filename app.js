@@ -7,6 +7,10 @@ import { IDAStar } from "./Algorithms/IDAStar.js";
 let canvas = document.getElementById("Canvas");
 let ctx = canvas.getContext("2d");
 let previousTimeStamp = 0;
+let usedTime = 0;
+let pathLenght = 0;
+let pathPrice = 0;
+let prevLocation = [-1,-1];
 let barve = [[255,192,203], [255,0,0], [255,160,0], [30,144,255], [0,100,0], [0,0,255]]
 
 let matrix;
@@ -94,9 +98,18 @@ function drawMatrix(matrix) {
 }
 
 function drawDAWAY(path, size) {
-
     let j = (path % (size - 2)) + 1
     let i = Math.floor(path / (size - 2)) + 1
+
+    if(!(prevLocation[0] == i && prevLocation[1] == j)){
+        pathLenght++;
+        pathPrice += parseInt(matrix[i][j]);
+        document.getElementById("length").innerHTML = "Dolžina poti: " + pathLenght;
+        document.getElementById("price").innerHTML = "Cena poti: " + pathPrice;
+    }
+    prevLocation[0] = i;
+    prevLocation[1] = j;
+
     ctx.beginPath();
     ctx.rect(j * (canvas.width / size), i * (canvas.height / size), (canvas.width / size), (canvas.width / size));
     ctx.fill();
@@ -163,6 +176,8 @@ function main(timeStamp) {
 }
 
 function findPath() {
+    pathLenght = 0;
+    pathPrice = 0;
     let number = document.getElementById("Labyrinth").value;
     let text = readTextFile(`./labyrinths/labyrinth_${number}.txt`);
     let algorithm = document.getElementById("Algorithm").value;
@@ -200,7 +215,8 @@ function findPath() {
             vrnjeno[1].push(endNode);
         }
     }
-    console.log("Porabljeni cas :",(Date.now()-start)/1000);
+    usedTime = ((Date.now()-start)/1000);
+    document.getElementById("time").innerHTML = "Porabljen čas: " + usedTime + "s";
     done = true;
 }
 
