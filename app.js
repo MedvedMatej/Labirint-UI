@@ -1,3 +1,7 @@
+import {BFS} from "./Algorithms/BFS.js"
+import {DFS} from "./Algorithms/DFS.js"
+import {IDDFS} from "./Algorithms/IDDFS.js"
+
 function readTextFile(file)
 {
     var rawFile = new XMLHttpRequest();
@@ -18,7 +22,7 @@ function readTextFile(file)
 }
 
 function stringToMatrix(data){
-    vrstice = data.split("\r\n");
+    let vrstice = data.split("\r\n");
     let matrix = [];
     for(let i = 0 ; i < vrstice.length;i++){
         let line = []
@@ -110,241 +114,23 @@ function matrixToGraph(matrix){
     return [graph, findNodes, startNode, endNode];
 }
 
-function DFS(graph, startNode, endNodes){
-    let marked = new Array(graph.length).fill(false);
-    let from = new Array(graph.length).fill(0);
-    
-    let stack = [];
-
-    from[startNode] = -1;
-    marked[startNode] = true;
-    stack.push(startNode);
-
-    console.log("Polagam na sklad vozlisce " + startNode);
-
-    while(!(stack.length == 0)){
-        let curNode = stack[stack.length-1];
-
-        if (endNodes.includes(curNode)){
-            console.log("Resitev DFS v vozliscu " + curNode);
-            console.log("Pot: " + curNode);
-            let finish = curNode;
-            let path = [curNode];
-            while(true){
-                curNode = from[curNode];
-                if (curNode != -1){
-                    console.log(" <-- " + curNode);
-                    path.push(curNode)
-                }
-                else{
-                    let index = endNodes.indexOf(finish);
-                    endNodes.splice(index,1)
-                    return [finish, endNodes,path];
-                }
-            }
-        }
-        //najdi neobiskanega naslednjika
-        let found = false;
-        for (let nextNode = 0; nextNode < graph[curNode].length; nextNode++){
-            if (graph[curNode][nextNode] == 1 && !marked[nextNode]){
-                marked[nextNode] = true;
-                from[nextNode] = curNode;
-                stack.push(nextNode);
-                
-                console.log("Polagam na sklad vozlisce " + nextNode);
-                
-                found = true;
-                break;                
-            }
-
-        }
-
-        if(!found){
-            stack.pop();
-            console.log("Odstranjum s sklada vozlisce " + curNode);
-        }
-    }
-}
-
-function BFS(graph, startNode, endNodes){
-    let marked = Array(graph.length).fill(false);
-    let from = Array(graph.length).fill(-1);
-    
-    let queue = [];
-
-    marked[startNode] = true;
-
-    queue.push(startNode);
-    //console.log("Dajem v vrsto vozlisce " + startNode);
-
-    while(queue.length>0){
-        let curNode = queue.shift();
-        //console.log("Odstranjujem iz vrste vozlisce " + curNode);
-
-        if(endNodes.includes(curNode)){
-            //console.log("Resitev BFS v vozliscu " + curNode);
-            console.log("Pot: " + curNode);
-            let finish = curNode;
-            let path = [curNode];
-            while(true){
-                curNode = from[curNode];
-                if(curNode != -1){
-                    console.log(" <-- " + curNode);
-                    path.push(curNode);
-                }
-                else{
-                    let index = endNodes.indexOf(finish);
-                    endNodes.splice(index,1)
-                    return [finish, endNodes,path];
-                }
-            }
-            
-        }
-
-        for(let nextNode = 0; nextNode < graph[curNode].length; nextNode++){
-            if(graph[curNode][nextNode] == 1 && !marked[nextNode]){
-                marked[nextNode] = true;
-                from[nextNode] = curNode;
-                queue.push(nextNode);
-                //console.log("Dajem v vrsto vozlisce "+ nextNode);
-            }
-        }
-    }
-}
-
-function IDDFS(graph, startNode, endNodes){
-    for(let depthLimit=0; depthLimit < graph.length; depthLimit++){
-        //console.log("Globina iskanja je " + depthLimit);
-        let marked = Array(graph.length).fill(false);
-        let from = Array(graph.length).fill(-1);
-
-        let stack = [];
-        marked[startNode] = true;
-        stack.push(startNode);
-        while(stack.length > 0){
-            let curNode = stack[stack.length-1];
-            
-            let finish = curNode;
-            let path = [curNode];
-            if(endNodes.includes(curNode)){
-                console.log("Pot: "+ curNode);
-                while(true){
-                    curNode = from[curNode];
-                    if(curNode != -1){
-                        console.log(" <-- " + curNode);
-                        path.push(curNode);
-                    }
-                    else{
-                        let index = endNodes.indexOf(finish);
-                        endNodes.splice(index,1);
-                        return [finish, endNodes, path];
-                    }
-                }
-            }
-        
-
-        let found = false;
-        if(stack.length <= depthLimit){
-            for(let nextNode = 0; nextNode < graph[curNode].length; nextNode++){
-                if(graph[curNode][nextNode] == 1 && !marked[nextNode]){
-                    marked[nextNode] = true;
-                    from[nextNode] = curNode;
-                    stack.push(nextNode);
-                    //console.log("Polagam na sklad vozlisce " + nextNode);
-                    found = true;
-                    break;
-                }
-            }
-        }
-
-        if(!found){
-            stack.pop();
-        }
-    }
-    }
-}
-
-function ASTAR(graph, startNode, endNodes, hCost){
-    open = [];
-    closed = new Array(graph.length).fill(false);
-    from = new Array(graph.length).fill(-1);
-
-    let gScore = new Array(graph.length).fill(Number.MAX_SAFE_INTEGER);
-    let fScore = new Array(graph.length).fill(Number.MAX_SAFE_INTEGER);
-    
-    gScore[startNode] = 0;
-    fScore[startNode] = hCost[startNode];
-
-    open.push(startNode);
-    console.log("Odpiram vozlisce " + startNode);
-
-    while(open.length != 0){
-        let minVal = Number.MAX_SAFE_INTEGER;
-        let minPos = 0;
-        let curNode = 0;
-
-        for(let i = 0; i < open.length; i++){
-            let node = open[i];
-            if (fScore[node] < minVal){
-                minVal = fScore[node];
-                minPos = i;
-                curNode = node;
-            }
-        }
-        let index = open.indexOf(minPos);
-        open.splice(index,1);
-        closed[curNode] = true;
-        console.log("Zapiram vozlisce " + curNode);
-
-        if (endNodes.includes(curNode)){
-            console.log("Resitev A* v vozliscu " + curNode);
-			console.log("Pot: " + curNode);
-
-            let finish = curNode;
-            let path = [curNode];
-            while(true){
-                curNode = from[curNode];
-                if(curNode != -1){
-                    console.log(" <-- " + curNode);
-                    path.push(curNode);
-                }
-                else{
-                    let index = endNodes.indexOf(finish);
-                    endNodes.splice(index,1);
-                    return [finish, endNodes, path];
-                }
-            }
-        }
-
-        for(let nextNode = 0; nextNode < graph[curNode].length; nextNode++){
-            
-            if(graph[curNode][nextNode] > 0 && !closed[nextNode]){
-                if(!open.includes(nextNode)){
-                    console.log("Odpiram vozlisce " + nextNode);
-                }
-                open.push(nextNode);
-                let dist = gScore[curNode] + graph[curNode][nextNode];
-                
-                if (dist < gScore[nextNode]){
-                    from[nextNode] = curNode;
-                    gScore[nextNode] = dist;
-                    fScore[nextNode] = gScore[nextNode] + hCost[nextNode];
-                    console.log("Posodabljam vozlisce " + nextNode);
-                }
-            }
-        }
-    }
+function changeColor(){
+    barve.unshift(barve.pop());
+    ctx.fillStyle = barve[0];
 }
 
 function main(timeStamp){
 
     if(timeStamp - previousTimeStamp > 500/(matrix.length/2)){
+        if(previousTimeStamp == 0){
+            drawMatrix(matrix);
+            changeColor();
+        }
         previousTimeStamp = timeStamp;
         if(pot[0].length == 0){
             if(pot.length != 0){
                 pot.shift();
-                barve.unshift(barve.pop());
-                ctx.fillStyle = barve[0];
+                changeColor();
             }
         }
         if(pot.length == 0){
@@ -358,40 +144,33 @@ function main(timeStamp){
 }
 
 let canvas = document.getElementById("Canvas");
-canvas.width = 800;
-canvas.height = 800;
 let ctx = canvas.getContext("2d");
 
-let text = readTextFile("./labyrinths/labyrinth_9.txt");
+let text = readTextFile("./labyrinths/labyrinth_1.txt");
 let matrix = stringToMatrix(text);
-//let visit_matrix = Array(matrix.length).fill().map(() => Array(matrix[0].length).fill(0));
-//consolePrintMatrix(visit_matrix);
-drawMatrix(matrix);
-ctx.fillStyle = "blue"
+
+
 
 
 let graph = matrixToGraph(matrix);
+let nodes = graph[1];
 let startNode = graph[2];
 let endNode = graph[3];
-let nodes = graph[1];
 graph = graph[0];
 let vrnjeno = [startNode, JSON.parse(JSON.stringify(nodes))]
 
-console.log("Dolžina nodov",nodes.length)
 
 let pot = []
 let previousTimeStamp = 0;
-let barve = ["pink","red","orange","dodgerblue","darkgreen"]
+let barve = ["pink","red","orange","dodgerblue","darkgreen","blue"]
 
+let algo = new DFS();
 for(let i = 0 ; i < nodes.length+1; i++){
-    console.log("Dolžina nodov",nodes.length)
-    console.log("Ponovitev številka: ",i)
-    vrnjeno = DFS(graph,vrnjeno[0],vrnjeno[1])
+    vrnjeno = algo.search(graph,vrnjeno[0],vrnjeno[1])
     pot.push(vrnjeno[2]);
     if(vrnjeno[1].length == 0){
         vrnjeno[1].push(endNode);
     }
-
 }
 
 main();
