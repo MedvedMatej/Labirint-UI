@@ -217,6 +217,16 @@ function findPath() {
     }
     usedTime = ((Date.now()-start)/1000);
     document.getElementById("time").innerHTML = "Porabljen čas: " + usedTime + "s";
+    let coordinatesString = "";
+    console.log(pot[0]);
+    for(let i = 0; i<pot.length;i++){
+        for(let j=0; j< pot[i].length;j++){
+            let x = (pot[i][j] % (matrix.length - 2)) + 1
+            let y = Math.floor(pot[i][j] / (matrix.length - 2)) + 1
+            coordinatesString += "(" + x + "," + y + ") -->";
+        }
+    }
+    document.getElementById("pathArea").value = coordinatesString.slice(0, coordinatesString.length-3);
     done = true;
 }
 
