@@ -219,10 +219,11 @@ function findPath() {
     document.getElementById("time").innerHTML = "Porabljen čas: " + usedTime + "s";
     let coordinatesString = "";
     for(let i = 0; i<pot.length;i++){
-        for(let j=0; j< pot[i].length;j++){
+        for(let j=pot[i].length-1; j >= 0 ;j--){
+            if(j==0 && i+1 != pot.length) continue;
             let x = (pot[i][j] % (matrix.length - 2)) + 1
             let y = Math.floor(pot[i][j] / (matrix.length - 2)) + 1
-            coordinatesString += "(" + x + "," + y + ") -->";
+            coordinatesString += "(" + x + "," + y + ") -> ";
         }
     }
     document.getElementById("pathArea").value = coordinatesString.slice(0, coordinatesString.length-3);
