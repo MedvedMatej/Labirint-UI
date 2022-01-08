@@ -9,7 +9,7 @@ export class DFS {
         marked[startNode] = true;
         stack.push(startNode);
 
-        while (!(stack.length == 0)) {
+        while (stack.length > 0) {
             let curNode = stack[stack.length - 1];
 
             if (endNodes.includes(curNode)) {

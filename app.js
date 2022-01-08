@@ -116,6 +116,19 @@ function drawDAWAY(path, size) {
 
 }
 
+function printDAWAY(path, size){
+    let coordinatesString = "";
+    for(let i = 0; i<path.length;i++){
+        for(let j=path[i].length-1; j >= 0 ;j--){
+            if(j==0 && i+1 != path.length) continue;
+            let x = (path[i][j] % (size - 2)) + 1
+            let y = Math.floor(path[i][j] / (size - 2)) + 1
+            coordinatesString += "(" + x + "," + y + ") -> ";
+        }
+    }
+    return coordinatesString.slice(0, coordinatesString.length-3);
+}
+
 function matrixToGraph(matrix) {
     //console.log(matrix.length, matrix[0].length)
     let graph = Array((matrix.length - 2) * (matrix[0].length - 2)).fill();
@@ -216,17 +229,9 @@ function findPath() {
         }
     }
     usedTime = ((Date.now()-start)/1000);
+
     document.getElementById("time").innerHTML = "Porabljen čas: " + usedTime + "s";
-    let coordinatesString = "";
-    for(let i = 0; i<pot.length;i++){
-        for(let j=pot[i].length-1; j >= 0 ;j--){
-            if(j==0 && i+1 != pot.length) continue;
-            let x = (pot[i][j] % (matrix.length - 2)) + 1
-            let y = Math.floor(pot[i][j] / (matrix.length - 2)) + 1
-            coordinatesString += "(" + x + "," + y + ") -> ";
-        }
-    }
-    document.getElementById("pathArea").value = coordinatesString.slice(0, coordinatesString.length-3);
+    document.getElementById("pathArea").value = printDAWAY(pot, matrix.length);
     done = true;
 }
 
