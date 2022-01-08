@@ -1,13 +1,10 @@
 export class DFS {
     search(graph, startNode, endNodes) {
         let marked = new Array(graph.length).fill(false);
-        let from = new Array(graph.length).fill(0);
+        let from = new Array(graph.length).fill(-1);
 
-        let stack = [];
-
-        from[startNode] = -1;
+        let stack = [startNode];
         marked[startNode] = true;
-        stack.push(startNode);
 
         while (stack.length > 0) {
             let curNode = stack[stack.length - 1];

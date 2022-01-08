@@ -70,13 +70,13 @@ function consolePrintMatrix(matrix) {
         let string_vrstica = ""
         for (let num of vrstica) {
             if (num >= 0 && num < 10) {
-                string_vrstica += " " + num;
+                string_vrstica += "," + num;
             }
             else {
                 string_vrstica += num;
             }
         }
-        print += string_vrstica + "\n";
+        print += "[" + string_vrstica.slice(1) + "]," + "\n";
     }
     console.log(print);
 }
@@ -104,6 +104,7 @@ function drawDAWAY(path, size) {
     if(!(prevLocation[0] == i && prevLocation[1] == j)){
         pathLenght++;
         pathPrice += parseInt(matrix[i][j]);
+        if(matrix[i][j] < 0) pathPrice -= parseInt(matrix[i][j]);
         document.getElementById("length").innerHTML = "Dolžina poti: " + pathLenght;
         document.getElementById("price").innerHTML = "Cena poti: " + pathPrice;
     }
@@ -138,7 +139,7 @@ function matrixToGraph(matrix) {
     for (let i = 1; i < matrix.length - 1; i++) {
 
         for (let j = 1; j < matrix[i].length - 1; j++) {
-            let vozlisce = Array((matrix.length - 1) * (matrix[i].length - 1)).fill(0);
+            let vozlisce = Array((matrix.length - 2) * (matrix[i].length - 2)).fill(0);
 
             if (matrix[i][j] == -1) {
                 graph[(i - 1) * (matrix[i].length - 2) + j - 1] = vozlisce;
