@@ -16,10 +16,10 @@ export class IDAStar {
         let min = Infinity;
 
         for (let nextNode = 0; nextNode < this.searchGraph[curNode].length; nextNode++) {
-            if (this.searchGraph[curNode][nextNode] > 0) {
+            if (this.searchGraph[curNode][nextNode] != 0) {
                 if (!(this.path.includes(nextNode))) {
                     this.path.unshift(nextNode);
-                    let res = this.search(gScore + this.searchGraph[curNode][nextNode], bound);
+                    let res = this.search(parseInt(gScore) + parseInt(this.searchGraph[curNode][nextNode]), bound);
                     if (this.found) {
                         return res;
                     }

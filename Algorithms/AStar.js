@@ -47,12 +47,13 @@ export class AStar{
             }
 
             for(let nextNode = 0; nextNode < graph[curNode].length; nextNode++){
-                if(graph[curNode][nextNode] > 0 && !closed[nextNode]){
+                if(graph[curNode][nextNode] != 0 && !closed[nextNode]){
                     if(!open.includes(nextNode)){
                     }
                     open.push(nextNode);
-                    let dist = gScore[curNode] + graph[curNode][nextNode];
+                    let dist = parseInt(gScore[curNode]) + parseInt(graph[curNode][nextNode]);
 
+                    console.log(dist, gScore[nextNode]);
                     if(dist < gScore[nextNode]){
                         from[nextNode] = curNode;
                         gScore[nextNode] = dist;
@@ -61,5 +62,6 @@ export class AStar{
                 }
             }
         }
+        return "NIgger"
     }
 }

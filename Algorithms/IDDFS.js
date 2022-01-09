@@ -31,7 +31,7 @@ export class IDDFS {
                 let found = false;
                 if (stack.length <= depthLimit) {
                     for (let nextNode = 0; nextNode < graph[curNode].length; nextNode++) {
-                        if (graph[curNode][nextNode] == 1 && !marked[nextNode]) {
+                        if (graph[curNode][nextNode] != 0 && !marked[nextNode]) {
                             marked[nextNode] = true;
                             from[nextNode] = curNode;
                             stack.push(nextNode);

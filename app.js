@@ -1,5 +1,5 @@
 import { BFS } from "./Algorithms/BFS.js";
-import { DFS } from "./Algorithms/DFS.js";
+import { DFS } from "./Algorithms/DFS copy.js";
 import { IDDFS } from "./Algorithms/IDDFS.js";
 import { AStar } from "./Algorithms/AStar.js";
 import { IDAStar } from "./Algorithms/IDAStar.js";
@@ -145,6 +145,41 @@ function matrixToGraph(matrix) {
                 graph[(i - 1) * (matrix[i].length - 2) + j - 1] = vozlisce;
                 continue;
             }
+            if (matrix[i][j - 1] != -1) vozlisce[(i - 1) * (matrix[i].length - 2) + (j - 1) - 1] = matrix[i][j - 1]; //levo
+            if (matrix[i][j + 1] != -1) vozlisce[(i - 1) * (matrix[i].length - 2) + (j - 1) + 1] = matrix[i][j + 1]; //desno
+            if (matrix[i - 1][j] != -1) vozlisce[(i - 1 - 1) * (matrix[i].length - 2) + (j - 1)] = matrix[i - 1][j];  //gor
+            if (matrix[i + 1][j] != -1) vozlisce[(i) * (matrix[i].length - 2) + (j - 1)] = matrix[i + 1][j];      //dol
+            graph[(i - 1) * (matrix[i].length - 2) + j - 1] = vozlisce;
+
+            if (matrix[i][j] == -2) {
+                startNode = (i - 1) * (matrix[i].length - 2) + j - 1
+            }
+            if (matrix[i][j] == -3) {
+                findNodes.unshift((i - 1) * (matrix[i].length - 2) + j - 1);
+            }
+            if (matrix[i][j] == -4) {
+                endNode = (i - 1) * (matrix[i].length - 2) + j - 1;
+            }
+        }
+    }
+    return [graph, findNodes, startNode, endNode];
+}
+
+function matrixToGraph1(matrix) {
+    //console.log(matrix.length, matrix[0].length)
+    let graph = Array((matrix.length - 2) * (matrix[0].length - 2)).fill();
+    let findNodes = []
+    let startNode;
+    let endNode;
+    for (let i = 1; i < matrix.length - 1; i++) {
+
+        for (let j = 1; j < matrix[i].length - 1; j++) {
+            let vozlisce = Array((matrix.length - 2) * (matrix[i].length - 2)).fill(0);
+
+            if (matrix[i][j] == -1) {
+                graph[(i - 1) * (matrix[i].length - 2) + j - 1] = vozlisce;
+                continue;
+            }
             if (matrix[i][j - 1] != -1) vozlisce[(i - 1) * (matrix[i].length - 2) + (j - 1) - 1] = 1; //levo
             if (matrix[i][j + 1] != -1) vozlisce[(i - 1) * (matrix[i].length - 2) + (j - 1) + 1] = 1; //desno
             if (matrix[i - 1][j] != -1) vozlisce[(i - 1 - 1) * (matrix[i].length - 2) + (j - 1)] = 1;  //gor
@@ -223,6 +258,7 @@ function findPath() {
         }
         else{
             vrnjeno = algo.search(graph, vrnjeno[0], vrnjeno[1]);
+            console.log(vrnjeno);
         }
         pot.push(vrnjeno[2]);
         if (vrnjeno[1].length == 0) {

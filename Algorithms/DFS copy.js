@@ -27,7 +27,7 @@ export class DFS {
             //najdi neobiskanega naslednjika
             let options = [];
             for (let nextNode = 0; nextNode < graph[curNode].length; nextNode++) {
-                if (graph[curNode][nextNode] == 1 && !marked[nextNode]) {
+                if (graph[curNode][nextNode] !=0 && !marked[nextNode]) {
                     options.push(nextNode);
                     //marked[nextNode] = true;
                     //from[nextNode] = curNode;
