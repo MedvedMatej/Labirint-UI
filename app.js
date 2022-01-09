@@ -277,7 +277,7 @@ function findPath() {
     for(let run of marked){
         sumMarked+=run;
     }
-    document.getElementById("marked").innerHTML = "Obdelana vozlišla: " + sumMarked;
+    document.getElementById("marked").innerHTML = "Obdelana vozlišča: " + sumMarked;
     done = true;
 }
 
