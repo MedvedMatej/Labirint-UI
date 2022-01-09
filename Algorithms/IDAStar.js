@@ -18,6 +18,7 @@ export class IDAStar {
         for (let nextNode = 0; nextNode < this.searchGraph[curNode].length; nextNode++) {
             if (this.searchGraph[curNode][nextNode] != 0) {
                 if (!(this.path.includes(nextNode))) {
+                    this.obdelana++;
                     this.path.unshift(nextNode);
                     let res = this.search(parseInt(gScore) + parseInt(this.searchGraph[curNode][nextNode]), bound);
                     if (this.found) {
@@ -38,6 +39,7 @@ export class IDAStar {
         this.searchGraph = graph;
         this.searchEndNodes = endNodes;
         this.searchHeurCost = hCost;
+        this.obdelana = 1;
 
         this.path = [];
         this.path.push(startNode);
@@ -52,7 +54,7 @@ export class IDAStar {
                 let finish = this.path[0];
                 let index = endNodes.indexOf(this.path[0]);
                 endNodes.splice(index,1);
-                return [this.path[0], endNodes, this.path];
+                return [this.path[0], endNodes, this.path, this.obdelana];
             }
 
             if (res == Infinity) {

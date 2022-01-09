@@ -2,7 +2,7 @@ export class DFS {
     search(graph, startNode, endNodes) {
         let marked = new Array(graph.length).fill(false);
         let from = new Array(graph.length).fill(-1);
-
+        let obdelana = 1;
         let stack = [startNode];
         marked[startNode] = true;
 
@@ -20,7 +20,8 @@ export class DFS {
                     else {
                         let index = endNodes.indexOf(finish);
                         endNodes.splice(index, 1)
-                        return [finish, endNodes, path];
+                        console.log(obdelana)
+                        return [finish, endNodes, path, obdelana];
                     }
                 }
             }
@@ -61,6 +62,7 @@ export class DFS {
             if(idx != -1){
                 //console.log(options, curNode, treasure, options[idx])
                 marked[options[idx]] = true;
+                obdelana++;
                 from[options[idx]] = curNode;
                 stack.push(options[idx]);
             }

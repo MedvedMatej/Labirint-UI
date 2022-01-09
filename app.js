@@ -16,7 +16,7 @@ let barve = [[255,192,203], [255,0,0], [255,160,0], [30,144,255], [0,100,0], [0,
 let matrix;
 let pot = [];
 let done = true;
-
+let marked = [];
 
 document.getElementById("Algorithm").onchange = () => {
 
@@ -78,7 +78,7 @@ function consolePrintMatrix(matrix) {
         }
         print += "[" + string_vrstica.slice(1) + "]," + "\n";
     }
-    console.log(print);
+    //console.log(print);
 }
 
 function drawMatrix(matrix) {
@@ -250,6 +250,7 @@ function findPath() {
     let endNode = graphValues[3];
     let vrnjeno = [startNode, JSON.parse(JSON.stringify(nodes))]
     pot = []
+    marked = [];
 
     let start = Date.now();
     for (let i = 0; i < nodes.length + 1; i++) {
@@ -258,9 +259,10 @@ function findPath() {
         }
         else{
             vrnjeno = algo.search(graph, vrnjeno[0], vrnjeno[1]);
-            console.log(vrnjeno);
+            //console.log(vrnjeno);
         }
         pot.push(vrnjeno[2]);
+        marked.push(vrnjeno[3]);
         if (vrnjeno[1].length == 0) {
             vrnjeno[1].push(endNode);
         }
@@ -269,6 +271,13 @@ function findPath() {
 
     document.getElementById("time").innerHTML = "Porabljen čas: " + usedTime + "s";
     document.getElementById("pathArea").value = printDAWAY(pot, matrix.length);
+
+    let sumMarked = 0;
+    //console.log(marked)
+    for(let run of marked){
+        sumMarked+=run;
+    }
+    document.getElementById("marked").innerHTML = "Obdelana vozlišla: " + sumMarked;
     done = true;
 }
 

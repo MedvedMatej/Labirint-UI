@@ -4,6 +4,7 @@ export class AStar{
         let open = [];
         let closed = Array(graph.length).fill(false);
         let from = Array(graph.length).fill(-1);
+        let obdelana = 1;
 
         let gScore = Array(graph.length).fill(Infinity);
         let fScore = Array(graph.length).fill(Infinity);
@@ -41,7 +42,7 @@ export class AStar{
                     else{
                         let index = endNodes.indexOf(finish);
                         endNodes.splice(index, 1)
-                        return [finish,endNodes,path];
+                        return [finish,endNodes,path, obdelana];
                     }
                 }
             }
@@ -51,6 +52,7 @@ export class AStar{
                     if(!open.includes(nextNode)){
                     }
                     open.push(nextNode);
+                    obdelana++;
                     let dist = parseInt(gScore[curNode]) + parseInt(graph[curNode][nextNode]);
 
                     console.log(dist, gScore[nextNode]);
@@ -62,6 +64,5 @@ export class AStar{
                 }
             }
         }
-        return "NIgger"
     }
 }

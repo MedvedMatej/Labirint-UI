@@ -2,7 +2,7 @@ export class BFS {
     search(graph, startNode, endNodes) {
         let marked = Array(graph.length).fill(false);
         let from = Array(graph.length).fill(-1);
-
+        let obdelana = 1;
         let queue = [];
 
         marked[startNode] = true;
@@ -23,7 +23,7 @@ export class BFS {
                     else {
                         let index = endNodes.indexOf(finish);
                         endNodes.splice(index, 1)
-                        return [finish, endNodes, path];
+                        return [finish, endNodes, path, obdelana];
                     }
                 }
 
@@ -31,6 +31,7 @@ export class BFS {
 
             for (let nextNode = 0; nextNode < graph[curNode].length; nextNode++) {
                 if (graph[curNode][nextNode] != 0 && !marked[nextNode]) {
+                    obdelana++;
                     marked[nextNode] = true;
                     from[nextNode] = curNode;
                     queue.push(nextNode);

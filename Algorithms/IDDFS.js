@@ -1,5 +1,6 @@
 export class IDDFS {
     search(graph, startNode, endNodes) {
+        let obdelana = 1;
         for (let depthLimit = 0; depthLimit < graph.length; depthLimit++) {
 
             let marked = Array(graph.length).fill(false);
@@ -23,7 +24,7 @@ export class IDDFS {
                         else {
                             let index = endNodes.indexOf(finish);
                             endNodes.splice(index, 1);
-                            return [finish, endNodes, path];
+                            return [finish, endNodes, path, obdelana];
                         }
                     }
                 }
@@ -32,6 +33,7 @@ export class IDDFS {
                 if (stack.length <= depthLimit) {
                     for (let nextNode = 0; nextNode < graph[curNode].length; nextNode++) {
                         if (graph[curNode][nextNode] != 0 && !marked[nextNode]) {
+                            obdelana++;
                             marked[nextNode] = true;
                             from[nextNode] = curNode;
                             stack.push(nextNode);
